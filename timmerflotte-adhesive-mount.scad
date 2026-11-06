@@ -5,7 +5,8 @@
 // Printing: disc flat on the bed, pin pointing up. No supports needed
 // (the underside of the head has a 45° chamfer). Use PETG or ASA for bathrooms.
 //
-// SPDX-License-Identifier: MIT
+// Copyright (c) 2026 Daniel A. Spilker
+// SPDX-License-Identifier: CC-BY-4.0
 
 // ---- Dimensions to measure on your sensor -----------------------------------
 // Distance from the centre of the sensor to where the screw head sits when

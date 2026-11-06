@@ -1,4 +1,4 @@
-name: Build STL
+name: Build STL and images
 
 on:
   push:
@@ -19,7 +19,7 @@ jobs:
       - name: Install OpenSCAD
         run: |
           sudo apt-get update
-          sudo apt-get install -y --no-install-recommends openscad
+          sudo apt-get install -y --no-install-recommends openscad xvfb xauth imagemagick
 
       - name: Render STL
         run: |
@@ -35,11 +35,20 @@ jobs:
           name: stl
           path: dist/*.stl
 
-      - name: Attach STL to release
+      - name: Render images
+        run: scripts/render-images.sh
+
+      - name: Upload images artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: images
+          path: images/*.png
+
+      - name: Attach STL and images to release
         if: startsWith(github.ref, 'refs/tags/v')
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh release create "$GITHUB_REF_NAME" dist/*.stl \
+          gh release create "$GITHUB_REF_NAME" dist/*.stl images/*.png \
             --title "$GITHUB_REF_NAME" --generate-notes \
-            || gh release upload "$GITHUB_REF_NAME" dist/*.stl --clobber
+            || gh release upload "$GITHUB_REF_NAME" dist/*.stl images/*.png --clobber

@@ -5,13 +5,16 @@ disc onto tiles (or any other smooth surface) instead of drilling a hole. A
 mushroom-head pin on the disc replaces the screw that would normally go into the
 keyhole slot on the back of the sensor.
 
+![Rendering of the adhesive mount](images/01-overview.png)
+
 ## Download
 
-The STL is built automatically by GitHub Actions from the OpenSCAD source:
+The STL and preview images are built automatically by GitHub Actions from the
+OpenSCAD source:
 
-- **Releases:** every tagged release has the STL attached.
-- **Latest build:** open the most recent run of the *Build STL* workflow under
-  *Actions* and download the `stl` artifact.
+- **Releases:** every tagged release has the STL and images attached.
+- **Latest build:** open the most recent run of the *Build STL and images*
+  workflow under *Actions* and download the `stl` or `images` artifact.
 
 ## Printing
 
@@ -51,9 +54,21 @@ To render the STL locally:
 openscad -o timmerflotte-adhesive-mount.stl timmerflotte-adhesive-mount.scad
 ```
 
+To regenerate the preview images in `images/` (needs `openscad`, `xvfb` and
+`imagemagick`):
+
+```sh
+scripts/render-images.sh
+```
+
 ## License
 
-[MIT](LICENSE)
+Copyright (c) 2026 Daniel A. Spilker
+
+This design is licensed under the
+[Creative Commons Attribution 4.0 International License](LICENSE)
+(CC BY 4.0). You may use, modify and share it, including commercially, as long
+as you give appropriate credit.
 
 ## Disclaimer
 
