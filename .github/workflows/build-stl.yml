@@ -1,0 +1,45 @@
+name: Build STL
+
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install OpenSCAD
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends openscad
+
+      - name: Render STL
+        run: |
+          mkdir -p dist
+          for f in *.scad; do
+            openscad -o "dist/${f%.scad}.stl" "$f"
+          done
+          ls -l dist
+
+      - name: Upload STL artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: stl
+          path: dist/*.stl
+
+      - name: Attach STL to release
+        if: startsWith(github.ref, 'refs/tags/v')
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" dist/*.stl \
+            --title "$GITHUB_REF_NAME" --generate-notes \
+            || gh release upload "$GITHUB_REF_NAME" dist/*.stl --clobber
